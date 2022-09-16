@@ -3,29 +3,32 @@ import React,{useState} from 'react';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Picker } from '@react-native-community/picker';
 import { StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import Contador from './Contador';
+
 
 export default function App() {
-const [estado,setarEstado] = useState('selecionar');
-const [segundos,setarSegundos] = useState(0);
+  console.disableYellowBox=true;
+const [estado,setarEstado] = useState('leitura');
+const [segundos,setarSegundos] = useState(1);
 const [minutos,setarMinutos] = useState(0);
 const [alarmSound,setarAlarmeSound] = useState([
   {
     id:1,
     selecionado: true,
     som:'Alarme 1',
-    file: 'alarm1.mp3'
+    file: require('./assets/audio1.mp3')
   },
   {
     id:2,
     selecionado: false,
     som:'Alarme 2',
-    file:'alarm2.mp3',
+    file:require('./assets/audio2.mp3')
   },
   {
     id:3,
     selecionado: false,
     som:'Alarme 3',
-    file:'alarm3.mp3',
+    file:require('./assets/audio3.mp3')
   },
 ]);
 var numeros=[];
@@ -45,7 +48,7 @@ function setarAlarme(id){
 }
 
 
-if(estado == 'selecionar'){
+if(estado == 'leitura'){
   return (
     <View style={styles.container}>
       <StatusBar style="light"/>
@@ -71,7 +74,7 @@ if(estado == 'selecionar'){
         setarMinutos(itemValue)
       }
       >
-        
+        <Picker.Item label='0' value='0'/>
         {
           numeros.map(function(val){
             return (<Picker.Item label={val.toString()} value={val.toString()}/>);
@@ -87,7 +90,7 @@ if(estado == 'selecionar'){
         setarSegundos(itemValue)
       }
       >
-        <Picker.Item label='0' value='0'/>
+        
          {
           numeros.map(function(val){
             return (<Picker.Item label={val.toString()} value={val.toString()}/>);
@@ -123,9 +126,15 @@ if(estado == 'selecionar'){
   );
       }else if(estado=='iniciar'){
         return(
-        <View>
-          <Text>Teste iniciar</Text>
-        </View>)
+        <Contador 
+        alarmes={alarmSound}
+        setarMinutos={setarMinutos}
+        setarSegundos={setarSegundos}
+        setarEstado={setarEstado}
+        minutos={minutos} 
+        segundos={segundos}>         
+        </Contador>
+        );
       }
 }
 
